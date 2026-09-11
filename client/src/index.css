@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  color: #17242c;
+  background-color: #f7f8f5;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #f7f8f5;
+}
