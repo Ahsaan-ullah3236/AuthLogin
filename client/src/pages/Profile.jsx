@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../lib/api";
 
-const API_URL = "http://localhost:5000/api/auth/profile";
+const PROFILE_URL = "/auth/profile";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -17,28 +17,22 @@ export default function Profile() {
   useEffect(() => {
     let isMounted = true;
     const loadProfile = async () => {
-      let accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
       if (!accessToken || !refreshToken) return;
       try {
         let response;
         try {
-          response = await axios.get(API_URL, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
+          response = await api.get(PROFILE_URL);
         } catch (requestError) {
           if (requestError.response?.status !== 401) throw requestError;
-          const refreshResponse = await axios.post(
-            "http://localhost:5000/api/auth/refresh",
-            { refreshToken },
-          );
-
-          accessToken = refreshResponse.data.accessToken;
-          localStorage.setItem("accessToken", accessToken);
-
-          response = await axios.get(API_URL, {
-            headers: { Authorization: `Bearer ${accessToken}` },
+          const refreshResponse = await api.post("/auth/refresh", {
+            refreshToken,
           });
+
+          localStorage.setItem("accessToken", refreshResponse.data.accessToken);
+
+          response = await api.get(PROFILE_URL);
         }
 
         if (isMounted) setProfile(response.data.data);

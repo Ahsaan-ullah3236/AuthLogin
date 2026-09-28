@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../lib/api";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,10 +28,11 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        { name: name.trim(), email: email.trim(), password },
-      );
+      const response = await api.post("/auth/register", {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      });
       if (response.data.success) {
         setSuccess("Account created. Redirecting you to sign in...");
         setTimeout(() => navigate("/login"), 900);
