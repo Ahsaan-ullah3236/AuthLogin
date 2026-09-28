@@ -1,0 +1,6 @@
+backend/
+├── .gitignore
+├── node_modules/   ← GitHub par nahi jana chahiye
+├── .env            ← secrets nahi jane chahiye
+├── package.json
+└── server.js
