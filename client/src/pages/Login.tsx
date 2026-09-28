@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../lib/api";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -22,10 +22,10 @@ export default function Login() {
 
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email: email.trim(), password },
-      );
+      const response = await api.post("/auth/login", {
+        email: email.trim(),
+        password,
+      });
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       if (response.data.success) {
