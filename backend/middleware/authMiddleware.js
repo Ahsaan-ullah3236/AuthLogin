@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export const authMiddleware = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -19,7 +22,7 @@ export const authMiddleware = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!Number.isInteger(decoded.userId) || decoded.userId < 1) {
+    if (typeof decoded.userId !== "string" || !UUID_PATTERN.test(decoded.userId)) {
       return res.status(401).json({
         success: false,
         message: "Invalid or expired token",

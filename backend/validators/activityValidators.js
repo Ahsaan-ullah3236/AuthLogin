@@ -1,8 +1,11 @@
 import HttpError from "../utils/HttpError.js";
 
 export const validateActivityId = (value) => {
-  const id = Number(value);
-  if (!Number.isInteger(id) || id < 1) {
+  const id = typeof value === "string" ? value.trim() : "";
+  const uuidPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  if (!uuidPattern.test(id)) {
     throw new HttpError(400, "Invalid activity id");
   }
   return id;

@@ -4,7 +4,7 @@ import pool from "../config/db.js";
 import HttpError from "../utils/HttpError.js";
 
 const SALT_ROUNDS = 10;
-const ACCESS_TOKEN_EXPIRES_IN = "15m";
+const ACCESS_TOKEN_EXPIRES_IN = "5minutes";
 const REFRESH_TOKEN_EXPIRES_IN = "7d";
 
 const getRefreshSecret = () =>
