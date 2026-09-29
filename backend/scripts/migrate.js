@@ -4,6 +4,8 @@ import pool from "../config/db.js";
 const migrations = [
   "001_create_users_new.sql",
   "002_create_activities.sql",
+  "003_activities_uuid_ids.sql",
+  "004_user_ids_uuid.sql",
 ];
 
 const client = await pool.connect();
