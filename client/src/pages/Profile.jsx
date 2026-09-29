@@ -17,27 +17,12 @@ export default function Profile() {
   useEffect(() => {
     let isMounted = true;
     const loadProfile = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      const refreshToken = localStorage.getItem("refreshToken");
-      if (!accessToken || !refreshToken) return;
+      if (!localStorage.getItem("accessToken")) return;
       try {
-        let response;
-        try {
-          response = await api.get(PROFILE_URL);
-        } catch (requestError) {
-          if (requestError.response?.status !== 401) throw requestError;
-          const refreshResponse = await api.post("/auth/refresh", {
-            refreshToken,
-          });
-
-          localStorage.setItem("accessToken", refreshResponse.data.accessToken);
-
-          response = await api.get(PROFILE_URL);
-        }
-
+        const response = await api.get(PROFILE_URL);
         if (isMounted) setProfile(response.data.data);
       } catch (requestError) {
-        if (isMounted) {
+        if (requestError.response?.status !== 401 && isMounted) {
           setError(
             requestError.response?.data?.message ||
               "We could not load your profile.",
